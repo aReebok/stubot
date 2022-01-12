@@ -22,10 +22,13 @@ module.exports = {
             const $ = cheerio.load(html);
             let queryReply = {};
 
-            $('.title-block', html).each(function () {
-                const searchTitle = $(this).text();
-                queryReply['searchTitle'] = searchTitle;
-            });
+            // $('.title-block', html).each(function () {
+            //     const searchTitle = $(this).text();
+            //     queryReply['searchTitle'] = searchTitle;
+            // });
+
+            const searchTitle = $('.title-block', html).text();
+            queryReply['searchTitle'] = searchTitle;
 
             $('.price-comparison__grid__row__icon', html).each(function() {
                 const serviceTitle = $(this).attr('title');
