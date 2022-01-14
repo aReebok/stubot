@@ -61,33 +61,25 @@ module.exports = {
 
         function createServiceFields(reply) {
             // takes a list of JSON objects and returns a list of fields containing json objects
-            services = reply.listStream;
+            let services = reply.listStream;
+            if (services.length === 0) {
+                return [ { 
+                    name: 'No free services found.', 
+                    value: 'Try -bl command.', 
+                    inline: true } ];
+            }
             
-            let returnFields = [
-                {
-                    name: 'SYNOPSIS',
-                },
-                {
-                    name: '\u200b',
-                    value: '\u200b',
-                    inline: false,
-                },
-                {
-                    name: 'Inline field title',
-                    value: 'Some value here',
-                    inline: true,
-                },
-                {
-                    name: 'Inline field title',
-                    value: 'Some value here',
-                    inline: true,
-                },
-                {
-                    name: 'Inline field title',
-                    value: 'Some value here',
-                    inline: true,
-                },
-            ];
+            let returnFields = [];
+
+            services.forEach(service => {
+                returnFields.push(
+                    {
+                        name: `${service.name}`,
+                        value: `[${service.subtext}](${service.link})`,
+                        inline: true
+                    }
+                );
+            });
               
             return returnFields;
         }
@@ -120,8 +112,6 @@ module.exports = {
 
             serviceEmbed = new MessageEmbed(serviceEmbed);
             serviceEmbed.addFields(createServiceFields(replyObject));
-            
-            
 
             message.channel.send({embeds: [bannerEmbed, serviceEmbed]});
         }
