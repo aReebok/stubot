@@ -23,35 +23,17 @@ module.exports = {
             let listStream = [];
             let servicesPushed = [];
 
-            // htmlBlock = htmlBlock.children().next().children().next().children();
-            // htmlBlock = htmlBlock.children().next().children().children() //price-comparison__grid__row__element
-            //price-comparison__grid__row__element
             $('.price-comparison__grid__row.price-comparison__grid__row--stream a').each(function () {
-                
                 let tempStreamObj = { 
                     'name': $(this).find('img').attr('title'),    // scrapes service name
                     'link': $(this).attr('href'),       // scrapes service url
                     'subtext': $(this).find('div').text()
                 }
-                    // listStream.push();
                 if(servicesPushed.indexOf(tempStreamObj.name) === -1) {
                     listStream.push(tempStreamObj); 
                     servicesPushed.push(tempStreamObj.name);
                     }
-                // console.log(`${$(this).html()}`)
-                // console.log('-------')
             });
-            // console.log(`${htmlBlock.html()}`)
-
-            // while(htmlBlock.find('img').attr('title')) {
-            //     let tempService = { 'name':  htmlBlock.find('img').attr('title')};
-            //     listStream.push({ 
-            //         'name': htmlBlock.find('img').attr('title'),    // scrapes service name
-            //         // 'link': htmlBlock.find('a').attr('href'),       // scrapes service url
-            //         // 'subtext': htmlBlock.find('a').children().next().text()
-            //     });
-            //     htmlBlock = htmlBlock.next();
-            // }
 
             return listStream;
         }
@@ -126,15 +108,10 @@ module.exports = {
             queryReply['posterURL'] = scrapePoster( $('.jw-info-box__container-sidebar') );
             queryReply['genre'] = genre;
             queryReply['imdbRating'] = scrapeRating( $('.jw-scoring-listing') );
-            // queryReply['listStream'] = scrapeStreams( $('.monetizations') );
             queryReply['listStream'] = scrapeStreams( $ );
 
 
-            console.log(queryReply);
-
-            // message.reply(
-            // `**${queryReply.searchTitle}**\n> ${queryReply.genre}\n> IMDB: **${queryReply.imdbRating}**\n> Where to watch: ${queryReply.listStream}`);
-
+            // console.log(queryReply);
             return queryReply;
         }
         
@@ -158,6 +135,6 @@ module.exports = {
                             message.reply(`There was an error in looking for "${args.join(' ')}."`)
                         })
                 });
-                
+
     }
 }
