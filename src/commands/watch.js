@@ -2,7 +2,7 @@ const fs = require('fs');
 const cheerio = require('cheerio');
 const axios = require('axios');
 const { html } = require('cheerio/lib/api/manipulation');
-const { MessageEmbed } = require('discord.js');
+const { MessageEmbed, TextChannel } = require('discord.js');
 
 module.exports = {
     name: "watch",
@@ -85,6 +85,7 @@ module.exports = {
         }
 
         function embedSend(replyObject) {
+
             if (message.author.id === client.user.id) return;
 
             const bannerEmbed = {
@@ -137,11 +138,14 @@ module.exports = {
             return queryReply;
         }
         
+        message.channel.sendTyping();
+
         axios( url + searchCategory[0] + args.join('-') )
             .then(response => {
                 let queryReply = scrapeResponse(response, 
                     searchCategory[0].split('/')[0].split('-').join(' ')); 
                 return embedSend(queryReply);
+                
             }).catch(
                 err => { // check if its a tv show: 
                     axios( url + searchCategory[1] + args.join('-') )
@@ -154,7 +158,6 @@ module.exports = {
                             message.reply(`There was an error in looking for "${args.join(' ')}."`)
                         })
                 });
-
-        
+                
     }
 }
