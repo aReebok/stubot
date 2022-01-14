@@ -3,11 +3,21 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 const { html } = require('cheerio/lib/api/manipulation');
 const { MessageEmbed, TextChannel } = require('discord.js');
+const imdbScrape = require('./imdbScrape');
+const { title } = require('process');
+const { data } = require('cheerio/lib/api/attributes');
+
+
+async function getTitle(search) {
+    data = await imdbScrape.startSearch(search);
+    return data;
+}
 
 module.exports = {
     name: "watch",
     description: "Tests an embedded object sending into chat",
-    execute(client, message, args, Discord) {
+    async execute(client, message, args, Discord) {
+
 
         let url = 'https://www.justwatch.com/us/';
         let searchCategory = ['movie/','tv-show/'];
@@ -117,7 +127,14 @@ module.exports = {
         
         message.channel.sendTyping();
 
-        axios( url + searchCategory[0] + args.join('-') )
+        let title = await imdbScrape.startSearch(args.join(' '));
+        
+        title = title.replace(/:/g, ' i'); //"lord of the rings: fellowship"
+        title = title.replace(/\s/g, '-');
+        console.log(title);
+        // return title;
+
+        axios( url + searchCategory[0] + title )
             .then(response => {
                 let queryReply = scrapeResponse(response, 
                     searchCategory[0].split('/')[0].split('-').join(' ')); 
@@ -125,7 +142,7 @@ module.exports = {
                 
             }).catch(
                 err => { // check if its a tv show: 
-                    axios( url + searchCategory[1] + args.join('-') )
+                    axios( url + searchCategory[1] + title )
                         .then(response => {
                             let queryReply =  scrapeResponse(response, 
                                 searchCategory[1].split('/')[0].split('-').join(' '));
