@@ -2,37 +2,11 @@ const { html } = require('cheerio/lib/api/manipulation');
 const fs = require('fs');
 const cheerio = require('cheerio');
 const axios = require('axios');
-const { type } = require('os');
 
 async function startSearch(search) {
     imdbLink = await getGoogleSearch(search)
     title = await scrapIMDB(imdbLink)
-    console.log(title)
-}
-
-const scrapIMDB = async (link) => {
-    title = ""
-    await axios(link).then(res => {
-        const html = res.data
-        title = findTitle(html)
-
-    }).catch(err => {
-        console.error(err);
-    });
-    return title
-}
-
-const findTitle = (html) => {
-    const $ = cheerio.load(html)
-    headerObjects = $('h1')
-    headers = []
-    headerObjects.each((index, element) => {
-        headers.push({
-            text:$(element).text(),
-        })
-    })
-    title = headers[0].text
-    return title
+    return title;
 }
 
 async function getGoogleSearch(search) {
@@ -46,6 +20,7 @@ async function getGoogleSearch(search) {
     })
     return oneTrueLink
 }
+
 const findLink = (html) => {
     const $ = cheerio.load(html)
     linkObjects = $('a')
@@ -75,3 +50,28 @@ const findLink = (html) => {
 }
 
 exports.startSearch = startSearch
+
+const scrapIMDB = async (link) => {
+    title = ""
+    await axios(link).then(res => {
+        const html = res.data
+        title = findTitle(html)
+
+    }).catch(err => {
+        console.error(err);
+    });
+    return title
+}
+
+const findTitle = (html) => {
+    const $ = cheerio.load(html)
+    headerObjects = $('h1')
+    headers = []
+    headerObjects.each((index, element) => {
+        headers.push({
+            text:$(element).text(),
+        })
+    })
+    title = headers[0].text
+    return title
+}
