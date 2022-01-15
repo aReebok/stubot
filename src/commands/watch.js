@@ -130,7 +130,8 @@ module.exports = {
 
         let request = ["TITLE", "DATE", "SUMMARY", "NUM_OF_EPISODES"]
 
-        let title = await imdbScraper.searchIMDB(args.join(' '), request);
+        let str = String(args.join(' '))
+        // let title = await imdbScraper.searchIMDB(str , request);
         // let imdbtemp = await imdbScraper.getGoogleSearch(, 'imdb');
         let jwtemp = await imdbScraper.getGoogleSearch(args.join(' '), 'justwatch');
         
@@ -139,9 +140,11 @@ module.exports = {
         // .replace(/\s+/g, " ");//"lord of the rings: fellowship"
 
         // title = title.replace(/\s/g, '-');
-        console.log(`title: ${title}
-        jw: ${jwtemp}`);
-        return title;
+        console.log(`title: ${jwtemp}`);
+
+        // jw: ${jwtemp}
+        return ""
+        // return title;
 
         axios( url + searchCategory[0] + title )
             .then(response => {

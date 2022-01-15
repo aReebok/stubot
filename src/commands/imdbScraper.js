@@ -39,18 +39,26 @@ const findLink = (html, loc) => {
     })
     theOneLink = ""
     for (link of links) {
-        if (link.text.includes(loc)) {
+        if (link.text.includes(loc+'.com')) {
             theOneLink = link.href
             break;
         }
     }
+    // console.log(links)
     ind = theOneLink.indexOf("http")
     theOneLink = theOneLink.slice(ind)
-
+    
     ind = -1
-    for (i = 0; i < 5; i++) {
-        ind = theOneLink.indexOf("/", ind + 1)
+    if (loc == "imdb") {
+        for (i = 0; i < 5; i++) {
+            ind = theOneLink.indexOf("/", ind + 1)
+        }
     }
+    else {
+        ind = theOneLink.indexOf("&", ind + 1)
+        ind = ind - 1
+    }
+
     theOneLink = theOneLink.substring(0, ind + 1)
     return theOneLink;
 }
