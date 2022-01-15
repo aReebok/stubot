@@ -3,15 +3,16 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 const { html } = require('cheerio/lib/api/manipulation');
 const { MessageEmbed, TextChannel } = require('discord.js');
-const imdbScrape = require('./imdbScraper');
-const { title } = require('process');
-const { data } = require('cheerio/lib/api/attributes');
+const imdbScraper = require('./imdbScraper');
+// const { request } = require('http');
+// const { title } = require('process');
+// const { data } = require('cheerio/lib/api/attributes');
 
 
-async function getTitle(search) {
-    data = await imdbScrape.startSearch(search);
-    return data;
-}
+// async function getTitle(search) {
+//     data = await imdbScraper.startSearch(search);
+//     return data;
+// }
 
 module.exports = {
     name: "watch",
@@ -127,15 +128,20 @@ module.exports = {
         
         message.channel.sendTyping();
 
-        let title = await imdbScrape.startSearch(args.join(' '));
-        
-        title = title.replace(/:/g, ' i')
-        .replace(/[^\w\s]|_/g, "")
-        .replace(/\s+/g, " ");//"lord of the rings: fellowship"
+        let request = ["TITLE", "DATE", "SUMMARY", "NUM_OF_EPISODES"]
 
-        title = title.replace(/\s/g, '-');
-        console.log(title);
-        // return title;
+        let title = await imdbScraper.searchIMDB(args.join(' '), request);
+        // let imdbtemp = await imdbScraper.getGoogleSearch(, 'imdb');
+        let jwtemp = await imdbScraper.getGoogleSearch(args.join(' '), 'justwatch');
+        
+        // title = title.replace(/:/g, ' i')
+        // .replace(/[^\w\s]|_/g, "")
+        // .replace(/\s+/g, " ");//"lord of the rings: fellowship"
+
+        // title = title.replace(/\s/g, '-');
+        console.log(`title: ${title}
+        jw: ${jwtemp}`);
+        return title;
 
         axios( url + searchCategory[0] + title )
             .then(response => {
@@ -147,7 +153,7 @@ module.exports = {
                 err => { // check if its a tv show: 
                     axios( url + searchCategory[1] + title )
                         .then(response => {
-                            let queryReply =  scrapeResponse(response, 
+                            let queryReply = scrapeResponse(response, 
                                 searchCategory[1].split('/')[0].split('-').join(' '));
                             return embedSend(queryReply);
                         }).catch ( err => {

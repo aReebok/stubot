@@ -1,11 +1,11 @@
-const { html } = require('cheerio/lib/api/manipulation');
+// const { html } = require('cheerio/lib/api/manipulation');
 const fs = require('fs');
 const cheerio = require('cheerio');
 const axios = require('axios');
-const { data } = require('cheerio/lib/api/attributes');
+// const { data } = require('cheerio/lib/api/attributes');
 
 async function searchIMDB(search, request) {
-    imdbLink = await getGoogleSearch(search)
+    imdbLink = await getGoogleSearch(search, "imdb")
     data = await scrapIMDB(imdbLink, request)
     return data;
 }
@@ -56,7 +56,7 @@ const findLink = (html, loc) => {
 }
 
 const scrapIMDB = async (link, request) => {
-    data = []
+    let data = []
     await axios(link).then(res => {
         const html = res.data
         if(request.includes("TITLE")) {
