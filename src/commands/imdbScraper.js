@@ -24,6 +24,7 @@ async function getGoogleSearch(search, loc) {
     })
     return oneTrueLink
 }
+exports.getGoogleSearch = getGoogleSearch
 
 const findLink = (html, loc) => {
 
