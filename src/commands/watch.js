@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 const axios = require('axios');
 const { html } = require('cheerio/lib/api/manipulation');
 const { MessageEmbed, TextChannel } = require('discord.js');
-const imdbScrape = require('./imdbScrape');
+const imdbScrape = require('./imdbScraper');
 const { title } = require('process');
 const { data } = require('cheerio/lib/api/attributes');
 
@@ -39,10 +39,10 @@ module.exports = {
                     'link': $(this).attr('href'),       // scrapes service url
                     'subtext': $(this).find('div').text()
                 }
-                if(servicesPushed.indexOf(tempStreamObj.name) === -1) {
+                if(servicesPushed.indexOf(tempStreamObj.name) === -1 && servicesPushed.length < 7) {
                     listStream.push(tempStreamObj); 
                     servicesPushed.push(tempStreamObj.name);
-                    }
+                }
             });
 
             return listStream;
@@ -129,7 +129,10 @@ module.exports = {
 
         let title = await imdbScrape.startSearch(args.join(' '));
         
-        title = title.replace(/:/g, ' i'); //"lord of the rings: fellowship"
+        title = title.replace(/:/g, ' i')
+        .replace(/[^\w\s]|_/g, "")
+        .replace(/\s+/g, " ");//"lord of the rings: fellowship"
+
         title = title.replace(/\s/g, '-');
         console.log(title);
         // return title;
