@@ -1,10 +1,6 @@
 require('dotenv').config();
-// const imdbScrape = require('./src/commands/imdbScrape')
-
 const fs = require('fs');
-
 const Discord = require('discord.js');
-// const { default: startSearch } = require('./src/commands/imdbScrape');
 const client = new Discord.Client(
     {intents:[
         Discord.Intents.FLAGS.GUILDS,
@@ -19,5 +15,3 @@ client.events = new Discord.Collection();
 });
 
 client.login(process.env.BOT_TOKEN);
-
-
