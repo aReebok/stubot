@@ -1,18 +1,9 @@
 const fs = require('fs');
 const cheerio = require('cheerio');
 const axios = require('axios');
-const { html } = require('cheerio/lib/api/manipulation');
 const { MessageEmbed, TextChannel } = require('discord.js');
 const imdbScraper = require('./imdbScraper');
-// const { request } = require('http');
-// const { title } = require('process');
-// const { data } = require('cheerio/lib/api/attributes');
 
-
-// async function getTitle(search) {
-//     data = await imdbScraper.startSearch(search);
-//     return data;
-// }
 
 module.exports = {
     name: "watch",
@@ -121,48 +112,29 @@ module.exports = {
             queryReply['imdbRating'] = scrapeRating( $('.jw-scoring-listing') );
             queryReply['listStream'] = scrapeStreams( $ );
 
-
-            // console.log(queryReply);
             return queryReply;
         }
         
         message.channel.sendTyping();
 
-        let request = ["TITLE", "DATE", "SUMMARY", "NUM_OF_EPISODES"]
+        const request = ["TITLE", "DATE", "SUMMARY", "NUM_OF_EPISODES"]
 
-        let str = String(args.join(' '))
-        // let title = await imdbScraper.searchIMDB(str , request);
-        // let imdbtemp = await imdbScraper.getGoogleSearch(, 'imdb');
-        let jwtemp = await imdbScraper.getGoogleSearch(args.join(' '), 'justwatch');
-        
-        // title = title.replace(/:/g, ' i')
-        // .replace(/[^\w\s]|_/g, "")
-        // .replace(/\s+/g, " ");//"lord of the rings: fellowship"
+        const title = await imdbScraper.searchIMDB(args.join(' ') , request);
+        const jwLink = await imdbScraper.getGoogleSearch(title, 'justwatch');
 
-        // title = title.replace(/\s/g, '-');
-        console.log(`title: ${jwtemp}`);
+        let genre = 'movie';
+        if (jwLink.includes('tv-show')) {
+            genre = 'tv-show';
+        }
 
-        // jw: ${jwtemp}
-        return ""
-        // return title;
-
-        axios( url + searchCategory[0] + title )
+        axios( jwLink )
             .then(response => {
-                let queryReply = scrapeResponse(response, 
-                    searchCategory[0].split('/')[0].split('-').join(' ')); 
+                let queryReply = scrapeResponse(response, genre); 
                 return embedSend(queryReply);
-                
             }).catch(
-                err => { // check if its a tv show: 
-                    axios( url + searchCategory[1] + title )
-                        .then(response => {
-                            let queryReply = scrapeResponse(response, 
-                                searchCategory[1].split('/')[0].split('-').join(' '));
-                            return embedSend(queryReply);
-                        }).catch ( err => {
-                            console.log(err);
-                            message.reply(`There was an error in looking for "${args.join(' ')}."`)
-                        })
+                err => { 
+                    console.log(err);
+                    message.reply(`There was an error in looking for "${args.join(' ')}."`);
                 });
 
     }
