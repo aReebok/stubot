@@ -17,6 +17,7 @@ async function getGoogleSearch(search, loc) {
     await axios("https://www.google.com/search?q=" + search +" "+ loc).then(res => {
         const html = res.data;
         oneTrueLink = findLink(html, loc)
+
     }).catch(err => {
         console.error(err);
         return "error"
@@ -25,6 +26,7 @@ async function getGoogleSearch(search, loc) {
 }
 
 const findLink = (html, loc) => {
+
     const $ = cheerio.load(html)
     linkObjects = $('a')
     links = []
@@ -64,6 +66,7 @@ const scrapIMDB = async (link, request) => {
         console.error(err);
     });
     return data
+
 }
 
 const findTitle = (html) => {
