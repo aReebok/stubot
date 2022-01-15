@@ -2,18 +2,21 @@ const { html } = require('cheerio/lib/api/manipulation');
 const fs = require('fs');
 const cheerio = require('cheerio');
 const axios = require('axios');
+const { data } = require('cheerio/lib/api/attributes');
 
-async function startSearch(search) {
+async function searchIMDB(search, request) {
     imdbLink = await getGoogleSearch(search)
-    title = await scrapIMDB(imdbLink)
-    return title;
+    data = await scrapIMDB(imdbLink, request)
+    return data;
 }
+exports.searchIMDB = searchIMDB
 
-async function getGoogleSearch(search) {
+
+async function getGoogleSearch(search, loc) {
     oneTrueLink = "";
-    await axios("https://www.google.com/search?q=" + search).then(res => {
+    await axios("https://www.google.com/search?q=" + search +" "+ loc).then(res => {
         const html = res.data;
-        oneTrueLink = findLink(html)
+        oneTrueLink = findLink(html, loc)
     }).catch(err => {
         console.error(err);
         return "error"
@@ -21,7 +24,7 @@ async function getGoogleSearch(search) {
     return oneTrueLink
 }
 
-const findLink = (html) => {
+const findLink = (html, loc) => {
     const $ = cheerio.load(html)
     linkObjects = $('a')
     links = []
@@ -33,7 +36,7 @@ const findLink = (html) => {
     })
     theOneLink = ""
     for (link of links) {
-        if (link.text.includes("imdb")) {
+        if (link.text.includes(loc)) {
             theOneLink = link.href
             break;
         }
@@ -49,18 +52,18 @@ const findLink = (html) => {
     return theOneLink;
 }
 
-exports.startSearch = startSearch
-
-const scrapIMDB = async (link) => {
-    title = ""
+const scrapIMDB = async (link, request) => {
+    data = []
     await axios(link).then(res => {
         const html = res.data
-        title = findTitle(html)
-
+        if(request.includes("TITLE")) {
+            title = findTitle(html)
+            data.push(title);
+        }
     }).catch(err => {
         console.error(err);
     });
-    return title
+    return data
 }
 
 const findTitle = (html) => {
