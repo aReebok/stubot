@@ -10,6 +10,8 @@ const client = new Discord.Client(
     ]});
 
 
+// Command handler created from src: https://www.youtube.com/watch?v=Sihf7B8D4Y8.
+
 client.commands = new Discord.Collection();
 client.events = new Discord.Collection();
 ['command_handler', 'event_handler'].forEach(handler => {
