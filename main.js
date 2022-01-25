@@ -1,5 +1,6 @@
 require('dotenv').config();
 const fs = require('fs');
+const fetch = require('node-fetch');
 
 const Discord = require('discord.js');
 const client = new Discord.Client(
