@@ -8,3 +8,4 @@
 1. First fork the repository. 
 2. In your terminal, run `git clone REPOLINK`
 3. Create a .env file with `BOT_TOKEN` variable set to your bot token (see .env.example).
+4. Make your changes and make a pull request.
