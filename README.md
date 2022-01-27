@@ -1,4 +1,16 @@
-# discord-bot-dev-team
+# stubot
+
+### Commands
+
+`!help`
+
+`!v2g <video-attachment>`
+
+`!watch <movie, tv-show name>`
+
+`!ping`
+
+`!roll`
 
 ### Free Guide and resources to making a discord bot:
 
