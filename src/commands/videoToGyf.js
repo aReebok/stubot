@@ -30,7 +30,7 @@ module.exports = {
         });
 
         retgfy ['gfyname'] = response.data.gfyname;
-        message.channel.send(`The gif was uploaded as ${retgfy.gfyname}; encoding in progress (may take some time)...`)
+        message.channel.send(`The gif was uploaded to gyfcat; encoding in progress (may take some time)...`)
         
         let uploadComplete = 0;
         while (!uploadComplete) {
@@ -47,7 +47,7 @@ module.exports = {
                 return message.reply("There was some error checking image status: NotFoundo.");
             } else { 
                 console.log(response.data);
-                await sleep(3000);
+                await sleep(1000);
                 message.channel.sendTyping();
             }
         }
