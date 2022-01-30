@@ -2,8 +2,8 @@ module.exports = {
     name: 'mosaic',
     description: "Talks to the API.",
     async execute(client, message, args, Discord) {
+        // message.react('👍');
         const axios = require('axios');
-
         // test simple get http reqs on axios
         let uploads = [];
         message.attachments.forEach(attachment => {
