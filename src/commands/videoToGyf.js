@@ -10,7 +10,9 @@ module.exports = {
     name: 'v2g',
     description: "Sends a video to gfycat api and recieves a gif of it",
     async execute(client, message, args, Discord) {
+        message.react('👍');
         message.channel.sendTyping();
+        
         let uploads = [];
         message.attachments.forEach(attachment => {
             uploads.push(attachment.url); });
