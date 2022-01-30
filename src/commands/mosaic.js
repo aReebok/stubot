@@ -2,7 +2,7 @@ module.exports = {
     name: 'mosaic',
     description: "Talks to the API.",
     async execute(client, message, args, Discord) {
-        message.react('👍');
+        // message.react('👍');
         const axios = require('axios');
         // test simple get http reqs on axios
         
