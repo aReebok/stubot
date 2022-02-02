@@ -2,10 +2,9 @@ module.exports = {
     name: 'mosaic',
     description: "Talks to the API.",
     async execute(client, message, args, Discord) {
+        // message.react('👍');
         const axios = require('axios');
-
         // test simple get http reqs on axios
-        
         let uploads = [];
         message.attachments.forEach(attachment => {
             uploads.push(attachment.url); });
@@ -23,9 +22,8 @@ module.exports = {
             .then(res => {
                 console.log('From /img \t' + res.data);
                 returnObj['img'] = `${res.data}`
-            }).catch(err => console.log(err));
+            }).catch((err) => console.log(err));
 
-    
         await axios.get('https://flask-tutorial-areebok.herokuapp.com/pwd')
             .then(res => console.log('From /pwd \t' + res.data))
             .catch((err) => console.log(err));
@@ -35,6 +33,7 @@ module.exports = {
             .catch((err) => console.log(err));
 
         return message.reply(`https://flask-tutorial-areebok.herokuapp.com/image/${returnObj.img}`)
+        // return message.reply('OKAY');
     }
 
 }

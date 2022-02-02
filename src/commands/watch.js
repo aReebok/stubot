@@ -9,7 +9,7 @@ module.exports = {
     name: "watch",
     description: "Tests an embedded object sending into chat",
     async execute(client, message, args, Discord) {
-
+        // message.react('👍');
 
         let url = 'https://www.justwatch.com/us/';
         let searchCategory = ['movie/','tv-show/'];
