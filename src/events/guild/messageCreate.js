@@ -1,13 +1,11 @@
-const testRegex = require("../../commands/testRegex");
+const testRegex = require("../../commands/banReg");
 
 module.exports = (Discord, client, message) => {
     const  PREFIX = "!"
     if (message.author.bot) return;
-    if (!message.content.startsWith(PREFIX)) {
-        const command = client.commands.get("testRegex")
-        return command.execute(client, message, Discord);
-    }
     const args = message.content.slice(PREFIX.length).split(/ +/);
+    
+    if (!message.content.startsWith(PREFIX)) return client.commands.get("testRegex").execute(client, message, Discord);
     const cmd = args.shift().toLowerCase();
 
     const command = client.commands.get(cmd);

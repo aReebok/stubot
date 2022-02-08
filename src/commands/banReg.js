@@ -1,10 +1,10 @@
 module.exports = {
-    name: "testRegex",
+    name: "banReg",
     description: "This should send back wahtever message was sent. ",
-    async execute(client, message, Discord){
+    async execute(client, message, args, Discord){
         const {RichEmbed} = require('discord.js');
-        // message.reply(`/echo ${message} @${message.author.username}\\`);
-        const r = new RegExp('co+c+k+', 'i');
+        // bans variations of a bad word
+        
         const ban = new RegExp('co*0*.*c+k','i');
         if (ban.test(`${message.toString().replaceAll(" ", '')}`)) {
             await message.reply("( ͡° ͜ʖ ͡°) nice try <:OMEGALUL:863653416789606400>");
