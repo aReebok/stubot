@@ -1,5 +1,7 @@
 # stubot
 
+[Click here to add stubot to your discord server](https://discord.com/oauth2/authorize?client_id=928480283701944380&scope=bot&permissions=1099511627775). 
+
 ### Commands
 
 `!help` – Displays all commands and descriptions.
